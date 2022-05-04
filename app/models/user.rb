@@ -8,10 +8,14 @@ class User < ApplicationRecord
  has_many :book_comments, dependent: :destroy
  has_many :favorites, dependent: :destroy
 
- has_many :active_relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
- has_many :passive_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
- has_many :following, through: :active_relationships, source: :followed
- has_many :followers, through: :passive_relationships, source: :follower
+ #フォローしている人の取得
+ has_many :relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
+ #フォローされている人の取得
+ has_many :reverse_of_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
+ #自分がフォローしている人
+ has_many :followings, through: :relationships, source: :followed
+ #自分をフォローしてくれている人
+ has_many :followers, through: :reverse_of_relationships, source: :follower
 
  has_one_attached :profile_image
 
@@ -21,5 +25,19 @@ class User < ApplicationRecord
       (profile_image.attached?) ? profile_image : 'no_image.jpg'
     end
 
+    #フォローした時の処理
+    def follow(user_id)
+      relationships.create(followed_id: user_id)
+    end
+
+    #フォロー外す時の処理
+    def unfollow(user_id)
+      relationships.find_by(followed_id: user_id).destroy
+    end
+
+    #フォローしているかを判定
+    def following?(user)
+      followings.include?(user)
+    end
 
 end

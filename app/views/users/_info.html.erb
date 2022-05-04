@@ -7,7 +7,9 @@
   <tr>
     <th>introduction</th>
     <th><%= @user.introduction %></th>
-    </tr>
+  </tr>
+  <tr><%= render 'relationships/follow', user: @user %></tr>
+  <tr><%= render 'relationships/followed', user: @user %></tr>
 </table>
 
 <div class='row'>
