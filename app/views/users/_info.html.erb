@@ -1,12 +1,12 @@
 <table class='table'>
-  <tr><%= image_tag @user.get_profile_image, size:'50×50' %></tr>
+  <tr><%= image_tag user.get_profile_image, size:'50×50' %></tr>
   <tr>
     <th>name</th>
-    <th><%= @user.name %></th>
+    <th><%= user.name %></th>
   </tr>
   <tr>
     <th>introduction</th>
-    <th><%= @user.introduction %></th>
+    <th><%= user.introduction %></th>
   </tr>
   <tr>
     <th>follows</th>
@@ -19,10 +19,10 @@
 </table>
 
 <div class='row'>
-  <% if @user.id == current_user.id %>
+  <% if user.id == current_user.id %>
     <td><%= render 'relationships/following', user: user %></td>
   <% else %>
-    <%= link_to edit_user_path(@user.id), class: "btn btn-outline-secondary btn-block edit_user_#{@user.id}" do %>
+    <%= link_to edit_user_path(user.id), class: "btn btn-outline-secondary btn-block edit_user_#{user.id}" do %>
       <i class="fas fa-user-cog"></i>
     <% end %>
   <% end %>

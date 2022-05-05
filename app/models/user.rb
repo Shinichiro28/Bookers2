@@ -27,13 +27,13 @@ class User < ApplicationRecord
     end
 
     #フォローした時の処理
-    def follow(user_id)
-      relationships.create(followed_id: user_id)
+    def follow(user)
+      relationships.create(followed_id: user.id)
     end
 
     #フォロー外す時の処理
-    def unfollow(user_id)
-      relationships.find_by(followed_id: user_id).destroy
+    def unfollow(user)
+      relationships.find_by(followed_id: user.id).destroy
     end
 
     #フォローしているかを判定
@@ -41,7 +41,7 @@ class User < ApplicationRecord
       followings.include?(user)
     end
 
-  def self.looks(content, method)
+  def self.looks(search, word)
     if search == "perfect_match"
       @user = User.where("name LIKE?","#{word}")
     elsif search == "forward_match"
